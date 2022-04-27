@@ -1,0 +1,70 @@
+name: test-and-release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "LICENSE"
+      - "build.sh"
+  pull_request:
+    paths-ignore:
+      - "LICENSE"
+      - "build.sh"
+
+jobs:
+  test-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.x
+      - uses: actions/setup-node@main
+        with:
+          node-version: "18"
+      - name: Cache Node modules
+        uses: actions/cache@main
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-
+      - name: Cache Deno dependencies 
+        uses: actions/cache@main
+        env:
+          cache-name: cache-deno-dependencies
+        with:
+          path: ~/.cache/deno
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-
+      - name: Install the dependencies
+        run: cd patcher && npm ci
+      - name: Patch the module
+        run: ./build.sh
+      - name: Run Deno tests
+        run: cd mod && deno test
+      - name: Release
+        if: github.ref == 'refs/heads/main'
+        run: |
+          version="$(cat VERSION)"
+
+          if git fetch origin tag "$version" > /dev/null 2>&1; then
+            echo "Tag already exists. Skipping..."
+            exit 0
+          fi
+
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+          git commit -a -m "$version" || true
+          git push origin main
+          git tag "$version"
+          git push origin "$version"
+
+          gh release create "$version" --notes "$version"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

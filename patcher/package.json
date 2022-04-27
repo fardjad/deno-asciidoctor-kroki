@@ -1,0 +1,24 @@
+{
+  "name": "patcher",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Patches asciidoctor-kroki to make it compatible with Deno",
+  "scripts": {
+    "get-version": "node --experimental-import-meta-resolve ./lib/get-version.mjs",
+    "patch": "node --experimental-import-meta-resolve ./lib/patch.mjs"
+  },
+  "keywords": [
+    "asciidoctor",
+    "kroki",
+    "deno",
+    "patch"
+  ],
+  "author": "Fardjad Davari <public@fardjad.com>",
+  "license": "MIT",
+  "dependencies": {
+    "acorn": "^8.7.0",
+    "asciidoctor-kroki": "^0.15.4",
+    "astring": "^1.8.1",
+    "estree-walker": "^3.0.1"
+  }
+}
