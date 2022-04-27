@@ -45,5 +45,6 @@ console.log(html);
 
 It's relatively easy to make Deno compatible shims for unsupported components.
 In case you are interested in doing so, please feel free to have a look at the
-project repository and the approach taken for shimming `kroki-client.js` and
-`kroki-diagram.js` files and submit a PR.
+[project repository](https://github.com/fardjad/deno-asciidoctor-kroki) and the
+approach taken for shimming `KrokiClient` in `mod/kroki-client.js`,
+`mod/kroki-diagram.js`, and `patcher/lib/patch.mjs` files and submit a PR.

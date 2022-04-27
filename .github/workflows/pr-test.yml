@@ -1,12 +1,10 @@
-name: test-and-release
+name: pr-test
 
 on:
-  push:
-    branches:
-      - main
+  pull_request: {}
 
 jobs:
-  test-and-release:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
@@ -40,23 +38,3 @@ jobs:
         run: ./build.sh
       - name: Run Deno tests
         run: cd mod && deno test
-      - name: Release
-        run: |
-          version="$(cat VERSION)"
-
-          if git fetch origin tag "$version" > /dev/null 2>&1; then
-            echo "Tag already exists. Skipping..."
-            exit 0
-          fi
-
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-
-          git commit -a -m "$version" || true
-          git push origin main
-          git tag "$version"
-          git push origin "$version"
-
-          gh release create "$version" --notes "$version"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
