@@ -16,7 +16,7 @@ For more information about the module, please visit the official
 
 ```typescript
 import Asciidoctor from "https://deno.land/x/asciidoctor/mod.js";
-import kroki from "https://deno.land/x/asciidoctor-kroki/mod.js";
+import kroki from "https://deno.land/x/asciidoctor_kroki/mod.js";
 
 const asciidoctor = Asciidoctor();
 kroki.register(Asciidoctor.Extensions);
