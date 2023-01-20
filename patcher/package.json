@@ -19,6 +19,6 @@
     "acorn": "^8.8.1",
     "asciidoctor-kroki": "^0.16.0",
     "astring": "^1.8.4",
-    "estree-walker": "^3.0.2"
+    "estree-walker": "^3.0.3"
   }
 }
