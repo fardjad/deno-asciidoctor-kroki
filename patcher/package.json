@@ -16,7 +16,7 @@
   "author": "Fardjad Davari <public@fardjad.com>",
   "license": "MIT",
   "dependencies": {
-    "acorn": "^8.8.1",
+    "acorn": "^8.8.2",
     "asciidoctor-kroki": "^0.16.0",
     "astring": "^1.8.4",
     "estree-walker": "^3.0.3"
